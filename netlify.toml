@@ -1,0 +1,8 @@
+# Netlify build config. ALL secrets are set in the Netlify UI (Site settings →
+# Environment variables), never committed here. See .env.example for the list.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

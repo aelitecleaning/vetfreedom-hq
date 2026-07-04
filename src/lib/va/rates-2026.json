@@ -1,0 +1,49 @@
+{
+  "_meta": {
+    "label": "VA disability compensation — 2026 rates",
+    "effectiveDate": "2025-12-01",
+    "co: 2.8% COLA over 2025 rates": "SEED VALUES — verify against VA.gov before relying on them",
+    "source": "https://www.va.gov/disability/compensation-rates/veteran-rates/",
+    "version": "2026.0",
+    "note": "Rates 10% and 20% do not vary by dependents. Rates 30%+ vary by dependent status. Amounts are monthly USD. 'childUnder18Add' and 'spouseAdd'-style deltas apply on top of the veteran-alone base for that rating. These figures are seeded estimates for the app and MUST be reconciled with the official VA rate tables each December."
+  },
+  "veteranAlone": {
+    "10": 175.51,
+    "20": 346.95,
+    "30": 537.42,
+    "40": 774.16,
+    "50": 1102.04,
+    "60": 1395.93,
+    "70": 1759.19,
+    "80": 2044.89,
+    "90": 2297.96,
+    "100": 3831.30
+  },
+  "withSpouseNoChildren": {
+    "30": 601.42,
+    "40": 859.16,
+    "50": 1208.04,
+    "60": 1523.93,
+    "70": 1908.19,
+    "80": 2214.89,
+    "90": 2489.96,
+    "100": 4044.91
+  },
+  "withSpouseOneChild": {
+    "30": 648.42,
+    "40": 922.16,
+    "50": 1287.04,
+    "60": 1618.93,
+    "70": 2019.19,
+    "80": 2341.89,
+    "90": 2632.96,
+    "100": 4204.51
+  },
+  "dependentDeltas": {
+    "_note": "Add these to the appropriate base above. Deltas apply only at 30%+ and scale roughly with rating; values shown are for the 100% column and are prorated internally by ratingFactor = ratePct/100.",
+    "additionalChildUnder18At100": 106.14,
+    "additionalChildOver18SchoolAt100": 342.85,
+    "spouseAdditionalForAidAndAttendanceAt100": 197.13,
+    "eachParentAt100": 171.83
+  }
+}
