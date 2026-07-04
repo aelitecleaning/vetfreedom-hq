@@ -9,7 +9,10 @@ export function getStripe(): Stripe {
   if (!cached) {
     const key = process.env.STRIPE_SECRET_KEY;
     if (!key) throw new Error("STRIPE_SECRET_KEY is not set");
-    cached = new Stripe(key, { apiVersion: "2024-09-30.acacia" });
+    // Let the SDK use its own pinned API version. Hard-coding a version string
+    // couples us to the exact installed package and breaks the type-check on
+    // upgrades — the account/SDK default is the safe choice.
+    cached = new Stripe(key);
   }
   return cached;
 }

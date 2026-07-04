@@ -4,10 +4,7 @@
 //    code (webhooks, metering) and never expose the service key to the browser.
 
 import { cookies } from "next/headers";
-import {
-  createServerClient as createSsrClient,
-  type CookieOptions,
-} from "@supabase/ssr";
+import { createServerClient as createSsrClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
@@ -17,21 +14,16 @@ export function createServerClient() {
   const cookieStore = cookies();
   return createSsrClient(URL, ANON, {
     cookies: {
-      get(name: string) {
-        return cookieStore.get(name)?.value;
+      getAll() {
+        return cookieStore.getAll();
       },
-      set(name: string, value: string, options: CookieOptions) {
+      setAll(cookiesToSet) {
         try {
-          cookieStore.set({ name, value, ...options });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            cookieStore.set(name, value, options)
+          );
         } catch {
-          // set() throws in Server Components; middleware handles refresh.
-        }
-      },
-      remove(name: string, options: CookieOptions) {
-        try {
-          cookieStore.set({ name, value: "", ...options });
-        } catch {
-          /* no-op in Server Components */
+          // setAll() throws in Server Components; middleware handles refresh.
         }
       },
     },

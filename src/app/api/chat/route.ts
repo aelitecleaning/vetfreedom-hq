@@ -85,8 +85,7 @@ export async function POST(req: NextRequest) {
       messages: messages.map((m) => ({ role: m.role, content: m.content })),
     });
     const text = completion.content
-      .filter((b): b is Anthropic.TextBlock => b.type === "text")
-      .map((b) => b.text)
+      .map((b) => (b.type === "text" ? b.text : ""))
       .join("\n");
 
     return NextResponse.json({ role: "assistant", content: text });
