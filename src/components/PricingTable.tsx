@@ -50,7 +50,7 @@ export function PricingTable() {
         <div className="brief-card flex flex-col border-signal-500">
           <div className="flex items-center justify-between">
             <p className="field-label text-signal-400">{OFFER.playbook.name}</p>
-            <span className="rounded bg-signal-500 px-2 py-0.5 text-xs font-bold text-base-950">
+            <span className="rounded bg-signal-500 px-2 py-0.5 text-xs font-bold text-sand">
               One-time
             </span>
           </div>

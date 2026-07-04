@@ -77,7 +77,7 @@ export function RoadmapBoard() {
                 <span
                   className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded border text-xs ${
                     done[m.id]
-                      ? "border-signal-500 bg-signal-500 text-base-950"
+                      ? "border-signal-500 bg-signal-500 text-sand"
                       : "border-base-600"
                   }`}
                   aria-hidden

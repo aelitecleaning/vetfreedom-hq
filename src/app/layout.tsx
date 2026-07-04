@@ -1,7 +1,21 @@
 import type { Metadata } from "next";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+
+// Friendly, human typography: Poppins for headings/labels, Inter for body.
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-stencil",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -21,11 +35,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-font="default">
+    <html
+      lang="en"
+      data-font="default"
+      className={`${inter.variable} ${poppins.variable}`}
+    >
       <body className="min-h-screen">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-signal-500 focus:px-4 focus:py-2 focus:text-base-950"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-signal-500 focus:px-4 focus:py-2 focus:text-sand"
         >
           Skip to content
         </a>

@@ -2,13 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-stencil: "Courier New", ui-monospace, monospace;
-}
-
-/* Dyslexia-friendly toggle: set data-font="readable" on <html>. Uses a
-   wider-tracking, higher-weight stack that's easier to parse. */
+/* Font CSS variables (--font-sans = Inter, --font-stencil = Poppins) are
+   provided by next/font in layout.tsx. The readable-font toggle overrides
+   --font-sans for dyslexia-friendly reading. */
 html[data-font="readable"] {
   --font-sans: "Comic Sans MS", "Trebuchet MS", Verdana, system-ui, sans-serif;
   letter-spacing: 0.01em;
@@ -22,16 +18,24 @@ body {
   color: theme("colors.sand");
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+/* Friendly display font for headings */
+h1,
+h2,
+h3 {
+  font-family: var(--font-stencil);
+  letter-spacing: -0.01em;
 }
 
 /* Accessibility: always-visible focus ring, large enough for low-vision users */
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-  outline: 3px solid theme("colors.signal.400");
+  outline: 3px solid theme("colors.signal.500");
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
-/* Respect users who ask for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -43,19 +47,19 @@ body {
 
 @layer components {
   .field-label {
-    @apply font-stencil uppercase tracking-widest text-olive-400 text-xs;
+    @apply font-stencil font-semibold uppercase tracking-widest text-signal-400 text-xs;
   }
   .brief-card {
-    @apply rounded-lg border border-base-700 bg-base-900 p-5;
+    @apply rounded-2xl border border-base-700 bg-base-900 p-5 shadow-card;
   }
   /* Minimum 44x44px tap targets per WCAG 2.5.5 */
   .btn {
-    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-md px-5 py-2.5 font-semibold transition-colors;
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl px-5 py-2.5 font-semibold transition-colors;
   }
   .btn-primary {
-    @apply btn bg-signal-500 text-base-950 hover:bg-signal-400;
+    @apply btn bg-signal-500 text-sand shadow-card hover:bg-signal-600;
   }
   .btn-ghost {
-    @apply btn border border-base-600 text-sand hover:bg-base-800;
+    @apply btn border border-base-700 bg-base-900 text-sand hover:bg-base-800;
   }
 }
