@@ -59,8 +59,8 @@ export default function RoadmapPage() {
             </div>
           ))}
         </div>
-        <Link href="/pricing" className="inline-block text-signal-400 underline">
-          Become a founding member to vote on priorities →
+        <Link href="/playbook" className="inline-block text-signal-400 underline">
+          Playbook owners get a direct say in what ships next →
         </Link>
       </section>
     </div>

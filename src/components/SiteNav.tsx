@@ -23,8 +23,8 @@ export function SiteNav() {
           <Link href="/chat" className="hidden hover:text-signal-400 sm:inline">
             Battle Buddy
           </Link>
-          <Link href="/pricing" className="hover:text-signal-400">
-            Membership
+          <Link href="/playbook" className="hover:text-signal-400">
+            Playbook
           </Link>
           <FontToggle />
           <Link href="/onboarding" className="btn-primary text-sm">

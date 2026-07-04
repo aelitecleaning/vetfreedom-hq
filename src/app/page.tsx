@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { TIERS } from "@/lib/tiers";
+import { OFFER, PLAYBOOK_PRICE } from "@/lib/tiers";
 
 export const metadata: Metadata = {
   title: "Military to Financial Freedom — the interactive field manual for veterans",
@@ -42,7 +42,7 @@ export default function HomePage() {
       <section className="grid gap-4 sm:grid-cols-3">
         {[
           ["We never touch your claim", "We teach how the system works and point you to free accredited VSOs to file. We never prepare, file, or charge for claims."],
-          ["Built by a vet, priced for vets", "No $5,000 coaching fees, no cut of your back pay. A low monthly membership — or free while we launch."],
+          ["Built by a vet, priced for vets", "No $5,000 coaching fees, no cut of your back pay, no subscription. The tools are free; the Playbook is a one-time $27."],
           ["Proof, not hype", "The playbook comes from real income streams the founder documents — VA loans, rentals, and a home-service business."],
         ].map(([h, p]) => (
           <div key={h} className="brief-card">
@@ -62,7 +62,7 @@ export default function HomePage() {
             ["Claim tracker", "Log your claim and see exactly where it sits across the VA's 8 stages, with reminders.", "/tracker"],
             ["Battle Buddy AI", "Plain-English answers on claims, C&P exams, VA loans, and school benefits, 24/7.", "/chat"],
             ["Command Center", "VA-loan house-hack planner, GI Bill vs VR&E war-gamer, the 24-month roadmap, and income trackers.", "/command-center"],
-            ["The community", "Founding members get into the private community to execute the playbook together.", "/pricing"],
+            ["The Playbook Vault", "One-time $27: fill-in worksheets, lender and rental scripts, deep guides, unlimited AI, and the private community.", "/playbook"],
           ].map(([h, p, href]) => (
             <Link key={h} href={href} className="brief-card block hover:border-signal-500">
               <p className="font-semibold text-sand">{h}</p>
@@ -74,14 +74,15 @@ export default function HomePage() {
 
       {/* Pricing preview */}
       <section className="space-y-5">
-        <h2 className="text-2xl font-bold">Start free. Upgrade when it pays off.</h2>
-        <div className="grid gap-4 md:grid-cols-3">
-          <PlanCard t={TIERS.recruit} />
-          <PlanCard t={TIERS.fieldGrade} highlight />
-          <PlanCard t={TIERS.founding} />
+        <h2 className="text-2xl font-bold">
+          Free tools. One optional {PLAYBOOK_PRICE} unlock. No subscriptions.
+        </h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          <PlanCard t={OFFER.free} />
+          <PlanCard t={OFFER.playbook} highlight />
         </div>
         <Link href="/pricing" className="inline-block text-signal-400 underline">
-          See full membership details →
+          See what&apos;s free and what&apos;s in the Playbook →
         </Link>
       </section>
     </div>

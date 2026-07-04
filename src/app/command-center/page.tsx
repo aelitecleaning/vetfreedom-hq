@@ -1,22 +1,18 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { HouseHackPlanner } from "@/components/HouseHackPlanner";
 import { EducationWarGamer } from "@/components/EducationWarGamer";
 import { RoadmapBoard } from "@/components/RoadmapBoard";
 import { IncomeTrackers } from "@/components/IncomeTrackers";
-import { PaidGate } from "@/components/PaidGate";
-import { resolveEntitlement } from "@/lib/tiers";
-import { getAccountState } from "@/lib/account";
+import { PLAYBOOK_PRICE } from "@/lib/tiers";
 
 export const metadata: Metadata = {
   title: "Financial Freedom Command Center",
   description:
-    "VA loan house-hack planner, GI Bill vs VR&E war-gamer, the 24-month roadmap with a Freedom Score, and income trackers. The MTFF playbook, made interactive.",
+    "Free VA-loan house-hack planner, GI Bill vs VR&E war-gamer, the 24-month roadmap with a Freedom Score, and income trackers. The MTFF playbook, made interactive.",
 };
 
-export default async function CommandCenterPage() {
-  const account = await getAccountState();
-  const ent = resolveEntitlement(account);
-
+export default function CommandCenterPage() {
   return (
     <div className="space-y-8">
       <div>
@@ -25,9 +21,13 @@ export default async function CommandCenterPage() {
           Financial Freedom Command Center
         </h1>
         <p className="mt-2 max-w-2xl text-olive-400">
-          This is the wealth-building half of the field manual — the part paid
-          membership funds. Everything here is general education, not individualized
-          financial advice.
+          The wealth-building half of the field manual — and it&apos;s all free.
+          These are general-education tools, not individualized financial advice.
+          Want the fill-in worksheets, scripts, and deep guides behind them?{" "}
+          <Link href="/playbook" className="text-signal-400 underline">
+            The Playbook ({PLAYBOOK_PRICE}, one-time)
+          </Link>{" "}
+          unlocks the Vault.
         </p>
       </div>
 
@@ -37,9 +37,7 @@ export default async function CommandCenterPage() {
           $0 down, funding-fee exempt for most disabled vets. Buy a 2–4 unit, live
           in one, rent the rest, and see what you actually pay to live.
         </p>
-        <PaidGate entitled={ent.commandCenter}>
-          <HouseHackPlanner />
-        </PaidGate>
+        <HouseHackPlanner />
       </section>
 
       <section id="education" className="scroll-mt-24 space-y-3">
@@ -47,9 +45,7 @@ export default async function CommandCenterPage() {
         <p className="text-sm text-olive-400">
           Don&apos;t burn a benefit before you compare them. Model both side by side.
         </p>
-        <PaidGate entitled={ent.commandCenter}>
-          <EducationWarGamer />
-        </PaidGate>
+        <EducationWarGamer />
       </section>
 
       <section id="roadmap" className="scroll-mt-24 space-y-3">
@@ -57,9 +53,7 @@ export default async function CommandCenterPage() {
         <p className="text-sm text-olive-400">
           The book&apos;s plan as check-off missions across the 5 income pillars.
         </p>
-        <PaidGate entitled={ent.commandCenter}>
-          <RoadmapBoard />
-        </PaidGate>
+        <RoadmapBoard />
       </section>
 
       <section id="income" className="scroll-mt-24 space-y-3">
@@ -68,9 +62,7 @@ export default async function CommandCenterPage() {
           Log benefit, rental, and business income — see the gap to your freedom
           number close month by month.
         </p>
-        <PaidGate entitled={ent.commandCenter}>
-          <IncomeTrackers />
-        </PaidGate>
+        <IncomeTrackers />
       </section>
     </div>
   );

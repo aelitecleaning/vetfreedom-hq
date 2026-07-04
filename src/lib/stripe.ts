@@ -21,8 +21,7 @@ export function isStripeConfigured(): boolean {
   return Boolean(process.env.STRIPE_SECRET_KEY);
 }
 
+// One-time purchase only — no subscriptions in this model.
 export const PRICE_IDS = {
-  monthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_MONTHLY ?? "",
-  annual: process.env.NEXT_PUBLIC_STRIPE_PRICE_ANNUAL ?? "",
-  founding: process.env.NEXT_PUBLIC_STRIPE_PRICE_FOUNDING ?? "",
+  playbook: process.env.NEXT_PUBLIC_STRIPE_PRICE_PLAYBOOK ?? "",
 };

@@ -1,33 +1,36 @@
-// Membership tiers + entitlement logic.
+// Monetization model: FREE tools + a single ONE-TIME "Playbook" unlock.
 //
-// COMPLIANCE NOTE: nothing claims-related is ever gated behind payment. The
-// calculator, claim tracker, C&P education, and claims-mode AI answers work on
-// the FREE tier for everyone. Paid tiers unlock the FINANCIAL-FREEDOM side
-// (VA loan tools, GI Bill/VR&E planning, business roadmap, unlimited AI on those
-// topics, community). See isPaidFeature() for the guarded surface.
+// Every interactive tool (calculator, tracker, AI, Command Center planners) is
+// free for everyone. The only paid thing is a one-time purchase — "The Playbook"
+// ($27, lifetime) — which unlocks a premium CONTENT area (financial worksheets,
+// templates, deep guides, community) and lifts the AI daily cap.
+//
+// COMPLIANCE NOTE: nothing claims-related is ever paid, and the paid content is
+// strictly the FINANCIAL-FREEDOM side — never claim preparation. See
+// src/data/vault.ts, which intentionally contains no claim documents.
 
-export type Tier = "recruit" | "field-grade" | "founding";
+export type Tier = "free" | "playbook";
 
 export interface Entitlement {
   tier: Tier;
-  /** Unlimited AI messages (paid) vs the free daily cap. */
+  /** Bought the one-time Playbook → premium content + unlimited AI. */
+  hasPlaybook: boolean;
   unlimitedAi: boolean;
-  /** Access to the paid Financial Freedom Command Center tools. */
-  commandCenter: boolean;
-  aiDailyCap: number; // messages/day on the free tier
+  aiDailyCap: number; // messages/day before you need the Playbook (or tomorrow)
 }
 
-export const FREE_AI_DAILY_CAP = 5;
+export const FREE_AI_DAILY_CAP = 10;
+export const PLAYBOOK_PRICE = "$27";
 
-// During the free launch period (FREE_FOR_ALL=true), every account is treated as
-// Field Grade. Flipping the env flag off begins paid enforcement.
+// During the free launch (FREE_FOR_ALL=true) everyone gets the Playbook content
+// unlocked so the whole app is explorable. Flip to false to start selling it.
 export function freeForAll(): boolean {
   return (process.env.FREE_FOR_ALL ?? "true").toLowerCase() === "true";
 }
 
 export interface AccountState {
   tier: Tier;
-  /** Early adopters who signed up during the free period get 90 days grandfathered. */
+  /** Early adopters keep Playbook content for 90 days after launch ends. */
   grandfatheredUntil?: string | null;
 }
 
@@ -36,77 +39,56 @@ export function resolveEntitlement(account: AccountState): Entitlement {
     account.grandfatheredUntil != null &&
     new Date(account.grandfatheredUntil).getTime() > Date.now();
 
-  const effectivelyPaid =
-    freeForAll() ||
-    grandfathered ||
-    account.tier === "field-grade" ||
-    account.tier === "founding";
+  const hasPlaybook =
+    freeForAll() || grandfathered || account.tier === "playbook";
 
   return {
     tier: account.tier,
-    unlimitedAi: effectivelyPaid,
-    commandCenter: effectivelyPaid,
+    hasPlaybook,
+    unlimitedAi: hasPlaybook,
     aiDailyCap: FREE_AI_DAILY_CAP,
   };
 }
 
-// Features that require a paid (or free-launch/grandfathered) entitlement. Note
-// the absence of anything claims-related — that's intentional and legally load-
-// bearing.
-export type PaidFeature =
-  | "command-center"
-  | "va-loan-planner"
-  | "education-wargamer"
-  | "roadmap"
-  | "income-trackers"
-  | "unlimited-ai";
+// The only gated surface is premium content — never the tools.
+export type PremiumFeature = "vault" | "premium-guides" | "community" | "unlimited-ai";
 
-export function isPaidFeature(feature: PaidFeature, ent: Entitlement): boolean {
-  if (feature === "unlimited-ai") return ent.unlimitedAi;
-  return ent.commandCenter;
+export function isPremium(feature: PremiumFeature, ent: Entitlement): boolean {
+  return feature === "unlimited-ai" ? ent.unlimitedAi : ent.hasPlaybook;
 }
 
-export const TIERS = {
-  recruit: {
-    name: "Recruit",
-    price: "Free",
-    priceNote: "No credit card",
+export const OFFER = {
+  free: {
+    name: "Everything, free",
+    price: "$0",
+    priceNote: "No credit card, forever",
     blurb:
-      "Everything claims-related, forever free: rating calculator, claim tracker, C&P education, and 5 Battle Buddy messages a day.",
+      "Every tool in the app: the rating calculator, claim tracker, C&P education, benefits briefing, the VA-loan and school-benefit planners, the 24-month roadmap, and daily AI help.",
     features: [
       "VA combined-rating calculator",
-      "Self-service claim journey tracker",
+      "Claim journey tracker + reminders",
       "C&P exam education",
       "Benefits briefing",
-      "5 AI messages / day",
-    ],
-  },
-  fieldGrade: {
-    name: "Field Grade",
-    price: "$9.97/mo",
-    priceNote: "or $79/year",
-    blurb:
-      "The whole financial-freedom playbook: VA loan & house-hacking tools, GI Bill vs VR&E war-gamer, the 24-month roadmap, income trackers, community, and unlimited AI.",
-    features: [
-      "Everything in Recruit",
-      "Unlimited Battle Buddy",
-      "VA loan house-hack planner",
+      "VA-loan house-hack planner",
       "GI Bill vs VR&E war-gamer",
       "24-month roadmap + Freedom Score",
-      "Income pillar trackers",
-      "Private community access",
+      "Income trackers",
+      `${FREE_AI_DAILY_CAP} AI messages / day`,
     ],
   },
-  founding: {
-    name: "Founding Member",
-    price: "$149 once",
-    priceNote: "First 100 — lifetime",
+  playbook: {
+    name: "The Playbook",
+    price: PLAYBOOK_PRICE,
+    priceNote: "One time · lifetime access",
     blurb:
-      "Lifetime Field Grade access and a founder badge. Locks in everything, forever, and funds the build.",
+      "The field manual, made actionable inside the app. Unlocks the Vault — fill-in worksheets, scripts, and deep guides for VA-loan deals, the home-service business, and hitting your freedom number — plus unlimited AI and the private community.",
     features: [
-      "Lifetime Field Grade access",
-      "Founder badge",
-      "Direct input on the roadmap",
+      "The Vault: house-hack deal analyzer, freedom-number worksheet, business launch kit",
+      "Lender & rental scripts you can copy",
+      "Deep written guides (VA loan, house-hacking, business)",
+      "Unlimited Battle Buddy AI",
+      "Private community access",
+      "Every future Playbook update, free",
     ],
   },
 } as const;

@@ -14,7 +14,7 @@ create table if not exists public.profiles (
   first_name text,
   branch text,
   status text check (status in ('active','transitioning','out')),
-  tier text not null default 'recruit' check (tier in ('recruit','field-grade','founding')),
+  tier text not null default 'free' check (tier in ('free','playbook')),
   stripe_customer_id text,
   grandfathered_until timestamptz,
   created_at timestamptz not null default now()
@@ -43,7 +43,7 @@ security definer set search_path = public
 as $$
 begin
   insert into public.profiles (id, email, tier, grandfathered_until)
-  values (new.id, new.email, 'recruit', now() + interval '90 days')
+  values (new.id, new.email, 'free', now() + interval '90 days')
   on conflict (id) do nothing;
   return new;
 end;

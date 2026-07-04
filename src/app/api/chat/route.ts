@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         error: "daily_limit",
-        message: `You've used your ${FREE_AI_DAILY_CAP} free Battle Buddy messages today. Upgrade to Field Grade for unlimited — or come back tomorrow. Your calculator and claim tracker stay free either way.`,
+        message: `You've used your ${FREE_AI_DAILY_CAP} free Battle Buddy messages today. Unlock the Playbook ($27, one-time) for unlimited — or come back tomorrow. Every other tool stays free either way.`,
       },
       { status: 429 }
     );
@@ -118,7 +118,7 @@ async function checkAndCountMessage(): Promise<{ allowed: boolean }> {
       .maybeSingle();
 
     const ent = resolveEntitlement({
-      tier: (profile?.tier as "recruit" | "field-grade" | "founding") ?? "recruit",
+      tier: (profile?.tier as "free" | "playbook") ?? "free",
       grandfatheredUntil: profile?.grandfathered_until ?? null,
     });
     if (ent.unlimitedAi) return { allowed: true };

@@ -12,7 +12,8 @@ export function SiteFooter() {
           </p>
           <nav className="flex flex-wrap gap-x-5 gap-y-2">
             <Link href="/calculator">Rating calculator</Link>
-            <Link href="/pricing">Membership</Link>
+            <Link href="/playbook">The Playbook</Link>
+            <Link href="/pricing">Pricing</Link>
             <Link href="/roadmap">Roadmap</Link>
             <a
               href="https://militarytofinancialfreedom.com"
